@@ -23,7 +23,7 @@ describe("calculateMA", () => {
 
   it("returns all nulls when period exceeds data length", () => {
     const ma = calculateMA(samplePrices.slice(0, 2), 7, "buy_price");
-    expect(ma.every((v) => v === null)).toBe(true);
+    expect(ma.every((v: number | null) => v === null)).toBe(true);
   });
 });
 

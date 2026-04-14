@@ -14,8 +14,6 @@ const RANGE_DAYS: Record<string, number> = {
   "6m": 180,
 };
 
-const MA_BUFFER_DAYS = 30;
-
 export default function Home() {
   const [range, setRange] = useState("3m");
   const [allPrices, setAllPrices] = useState<PriceRow[]>([]);

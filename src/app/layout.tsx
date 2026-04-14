@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Gold Price Tracker",
   description: "Track daily 9999 gold prices from Vàng Quý Tùng",
   manifest: "/manifest.json",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export const viewport: Viewport = {

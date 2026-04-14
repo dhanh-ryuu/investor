@@ -1,7 +1,6 @@
 import * as cheerio from "cheerio";
 
 const TARGET_URL = "https://vangquytung.com/";
-const TARGET_PRODUCT = "Vàng Quý Tùng 9999";
 
 export interface GoldPrice {
   buyPrice: number;
