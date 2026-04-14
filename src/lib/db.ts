@@ -15,4 +15,18 @@ export async function initDb() {
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     )
   `);
+  await db.execute(`
+    CREATE TABLE IF NOT EXISTS apartment_prices (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      date TEXT NOT NULL,
+      area TEXT NOT NULL,
+      bedroom_type TEXT NOT NULL,
+      avg_price_per_m2 INTEGER NOT NULL,
+      min_price_per_m2 INTEGER NOT NULL,
+      max_price_per_m2 INTEGER NOT NULL,
+      listing_count INTEGER NOT NULL,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      UNIQUE(date, area, bedroom_type)
+    )
+  `);
 }
