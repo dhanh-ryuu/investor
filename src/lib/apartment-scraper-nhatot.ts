@@ -4,34 +4,35 @@ const CHOTOT_API = "https://gateway.chotot.com/v1/public/ad-listing";
 
 export interface NhatotAd {
   price: number;
-  area: number;
+  size: number;
   rooms: number;
   subject: string;
   pty_project_name: string;
   price_million_per_m2: number;
 }
 
-const AREA_KEYWORDS: Record<string, string[]> = {
-  ocean_park_1: ["ocean park gia lâm", "ocean park 1", "ocean park s"],
+const PROJECT_KEYWORDS: Record<string, string[]> = {
+  ocean_park_1: ["ocean park gia lâm", "vinhomes ocean park gia"],
   ocean_park_2: ["ocean park 2"],
   ocean_park_3: ["ocean park 3"],
 };
 
 function matchesArea(ad: NhatotAd, area: string): boolean {
-  const keywords = AREA_KEYWORDS[area];
+  const keywords = PROJECT_KEYWORDS[area];
   if (!keywords) return false;
 
-  const text = `${ad.subject} ${ad.pty_project_name}`.toLowerCase();
+  // Require pty_project_name to contain keywords (much more reliable than subject)
+  const projectName = ad.pty_project_name.toLowerCase();
 
-  // For ocean_park_1: match "ocean park" but NOT "ocean park 2" or "ocean park 3"
   if (area === "ocean_park_1") {
-    if (text.includes("ocean park 2") || text.includes("ocean park 3")) {
+    // Match "ocean park" in project name but NOT "ocean park 2" or "ocean park 3"
+    if (projectName.includes("ocean park 2") || projectName.includes("ocean park 3")) {
       return false;
     }
-    return keywords.some((kw) => text.includes(kw));
+    return projectName.includes("ocean park");
   }
 
-  return keywords.some((kw) => text.includes(kw));
+  return keywords.some((kw) => projectName.includes(kw));
 }
 
 export function parseNhatotResponse(
@@ -41,13 +42,13 @@ export function parseNhatotResponse(
 ): RawListing[] {
   return ads
     .filter((ad) => {
-      if (ad.price <= 0 || ad.area <= 0) return false;
+      if (ad.price <= 0 || ad.size <= 0) return false;
       if (ad.rooms !== rooms) return false;
       return matchesArea(ad, area);
     })
     .map((ad) => ({
       price: ad.price,
-      areaM2: ad.area,
+      areaM2: ad.size,
       rooms: ad.rooms,
       source: "nhatot" as const,
     }));
@@ -59,10 +60,10 @@ export async function fetchNhatotListings(
 ): Promise<RawListing[]> {
   const areaKeywords =
     area === "ocean_park_1"
-      ? "vinhomes ocean park"
+      ? "vinhomes ocean park gia lam"
       : area === "ocean_park_2"
-        ? "ocean park 2"
-        : "ocean park 3";
+        ? "vinhomes ocean park 2"
+        : "vinhomes ocean park 3";
 
   const allListings: NhatotAd[] = [];
 
@@ -79,7 +80,7 @@ export async function fetchNhatotListings(
 
     try {
       const response = await fetch(url.toString(), {
-        headers: { "User-Agent": "GoldPriceTracker/1.0" },
+        headers: { "User-Agent": "ApartmentTracker/1.0" },
       });
 
       if (!response.ok) {
