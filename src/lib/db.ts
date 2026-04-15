@@ -25,8 +25,13 @@ export async function initDb() {
       min_price_per_m2 INTEGER NOT NULL,
       max_price_per_m2 INTEGER NOT NULL,
       listing_count INTEGER NOT NULL,
+      sample_listings TEXT DEFAULT '[]',
       created_at TEXT NOT NULL DEFAULT (datetime('now')),
       UNIQUE(date, area, bedroom_type)
     )
   `);
+  // Add sample_listings column if table already exists without it
+  await db.execute(`
+    ALTER TABLE apartment_prices ADD COLUMN sample_listings TEXT DEFAULT '[]'
+  `).catch(() => {});
 }

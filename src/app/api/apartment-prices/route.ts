@@ -23,14 +23,14 @@ export async function GET(request: Request) {
 
   if (area && VALID_AREAS.includes(area)) {
     const result = await db.execute({
-      sql: "SELECT date, area, bedroom_type, avg_price_per_m2, min_price_per_m2, max_price_per_m2, listing_count FROM apartment_prices WHERE date >= ? AND area = ? ORDER BY date ASC",
+      sql: "SELECT date, area, bedroom_type, avg_price_per_m2, min_price_per_m2, max_price_per_m2, listing_count, sample_listings FROM apartment_prices WHERE date >= ? AND area = ? ORDER BY date ASC",
       args: [startDateStr, area],
     });
     return NextResponse.json(result.rows);
   }
 
   const result = await db.execute({
-    sql: "SELECT date, area, bedroom_type, avg_price_per_m2, min_price_per_m2, max_price_per_m2, listing_count FROM apartment_prices WHERE date >= ? ORDER BY date ASC",
+    sql: "SELECT date, area, bedroom_type, avg_price_per_m2, min_price_per_m2, max_price_per_m2, listing_count, sample_listings FROM apartment_prices WHERE date >= ? ORDER BY date ASC",
     args: [startDateStr],
   });
   return NextResponse.json(result.rows);

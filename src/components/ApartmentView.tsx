@@ -6,6 +6,7 @@ import AreaSelector from "@/components/AreaSelector";
 import ApartmentChart, { type ApartmentPriceRow } from "@/components/ApartmentChart";
 import ApartmentStatsBar from "@/components/ApartmentStatsBar";
 import ApartmentPriceTable from "@/components/ApartmentPriceTable";
+import ApartmentListings from "@/components/ApartmentListings";
 
 const BEDROOM_TYPES = ["1pn", "2pn", "3pn"];
 
@@ -79,6 +80,7 @@ export default function ApartmentView() {
           <ApartmentChart prices={prices} selectedArea={area} selectedBedroom={bedroomFilter} />
           <ApartmentStatsBar prices={prices} selectedArea={area} />
           <ApartmentPriceTable prices={prices} selectedArea={area} />
+          <ApartmentListings prices={prices} selectedArea={area} />
         </>
       )}
     </>

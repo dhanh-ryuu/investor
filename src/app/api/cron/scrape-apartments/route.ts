@@ -18,13 +18,14 @@ export async function POST(request: Request) {
     if (!result.data) continue;
 
     await db.execute({
-      sql: `INSERT INTO apartment_prices (date, area, bedroom_type, avg_price_per_m2, min_price_per_m2, max_price_per_m2, listing_count)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+      sql: `INSERT INTO apartment_prices (date, area, bedroom_type, avg_price_per_m2, min_price_per_m2, max_price_per_m2, listing_count, sample_listings)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(date, area, bedroom_type) DO UPDATE SET
               avg_price_per_m2 = excluded.avg_price_per_m2,
               min_price_per_m2 = excluded.min_price_per_m2,
               max_price_per_m2 = excluded.max_price_per_m2,
               listing_count = excluded.listing_count,
+              sample_listings = excluded.sample_listings,
               created_at = datetime('now')`,
       args: [
         today,
@@ -34,6 +35,7 @@ export async function POST(request: Request) {
         result.data.min_price_per_m2,
         result.data.max_price_per_m2,
         result.data.listing_count,
+        JSON.stringify(result.data.sample_listings),
       ],
     });
     recordsSaved++;

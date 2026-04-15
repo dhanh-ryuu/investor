@@ -14,6 +14,15 @@ import { Line } from "react-chartjs-2";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend);
 
+export interface ListingSample {
+  url: string;
+  title: string;
+  price: number;
+  areaM2: number;
+  pricePerM2: number;
+  source: "nhatot" | "batdongsan";
+}
+
 export interface ApartmentPriceRow {
   date: string;
   area: string;
@@ -22,6 +31,7 @@ export interface ApartmentPriceRow {
   min_price_per_m2: number;
   max_price_per_m2: number;
   listing_count: number;
+  sample_listings?: string | ListingSample[];
 }
 
 interface ApartmentChartProps {

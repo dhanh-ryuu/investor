@@ -3,6 +3,17 @@ export interface RawListing {
   areaM2: number;
   rooms: number;
   source: "nhatot" | "batdongsan";
+  url?: string;
+  title?: string;
+}
+
+export interface ListingSample {
+  url: string;
+  title: string;
+  price: number;
+  areaM2: number;
+  pricePerM2: number;
+  source: "nhatot" | "batdongsan";
 }
 
 export interface AggregatedPrice {
@@ -10,6 +21,7 @@ export interface AggregatedPrice {
   min_price_per_m2: number;
   max_price_per_m2: number;
   listing_count: number;
+  sample_listings: ListingSample[];
 }
 
 export function removeOutliers(prices: number[]): number[] {
@@ -28,5 +40,22 @@ export function aggregateListings(listings: RawListing[]): AggregatedPrice | nul
   const avg = Math.round(sum / cleaned.length);
   const min = Math.min(...cleaned);
   const max = Math.max(...cleaned);
-  return { avg_price_per_m2: avg, min_price_per_m2: min, max_price_per_m2: max, listing_count: cleaned.length };
+  // Build sample listings from non-outlier entries
+  const cleanedSet = new Set(cleaned);
+  const samples: ListingSample[] = listings
+    .filter((l) => {
+      const ppm2 = Math.round(l.price / l.areaM2);
+      return cleanedSet.has(ppm2) && l.url;
+    })
+    .map((l) => ({
+      url: l.url!,
+      title: l.title || "",
+      price: l.price,
+      areaM2: l.areaM2,
+      pricePerM2: Math.round(l.price / l.areaM2),
+      source: l.source,
+    }))
+    .slice(0, 10);
+
+  return { avg_price_per_m2: avg, min_price_per_m2: min, max_price_per_m2: max, listing_count: cleaned.length, sample_listings: samples };
 }

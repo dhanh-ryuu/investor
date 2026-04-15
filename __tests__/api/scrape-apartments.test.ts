@@ -39,6 +39,7 @@ describe("POST /api/cron/scrape-apartments", () => {
           min_price_per_m2: 50000000,
           max_price_per_m2: 60000000,
           listing_count: 15,
+          sample_listings: [{ url: "https://nhatot.com/123.htm", title: "Test", price: 3500000000, areaM2: 69, pricePerM2: 50724638, source: "nhatot" }],
         },
       },
       {

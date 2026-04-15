@@ -9,6 +9,7 @@ export interface NhatotAd {
   subject: string;
   pty_project_name: string;
   price_million_per_m2: number;
+  list_id?: number;
 }
 
 const PROJECT_KEYWORDS: Record<string, string[]> = {
@@ -51,6 +52,8 @@ export function parseNhatotResponse(
       areaM2: ad.size,
       rooms: ad.rooms,
       source: "nhatot" as const,
+      url: ad.list_id ? `https://www.nhatot.com/${ad.list_id}.htm` : undefined,
+      title: ad.subject,
     }));
 }
 
