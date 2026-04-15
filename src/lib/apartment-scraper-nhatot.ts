@@ -23,7 +23,7 @@ function matchesArea(ad: NhatotAd, area: string): boolean {
   if (!keywords) return false;
 
   // Require pty_project_name to contain keywords (much more reliable than subject)
-  const projectName = ad.pty_project_name.toLowerCase();
+  const projectName = (ad.pty_project_name || "").toLowerCase();
 
   if (area === "ocean_park_1") {
     // Match "ocean park" in project name but NOT "ocean park 2" or "ocean park 3"
@@ -45,6 +45,9 @@ export function parseNhatotResponse(
     .filter((ad) => {
       if (ad.price <= 0 || ad.size <= 0) return false;
       if (ad.rooms !== rooms) return false;
+      // Sanity check: price/m² must be between 20M and 200M VND
+      const pricePerM2 = ad.price / ad.size;
+      if (pricePerM2 < 20_000_000 || pricePerM2 > 200_000_000) return false;
       return matchesArea(ad, area);
     })
     .map((ad) => ({
