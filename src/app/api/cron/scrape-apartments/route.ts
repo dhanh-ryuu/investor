@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { db, initDb } from "@/lib/db";
 import { scrapeAllApartments } from "@/lib/apartment-scraper";
 
-export async function POST(request: Request) {
+export async function GET(request: Request) {
   const authHeader = request.headers.get("authorization");
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
