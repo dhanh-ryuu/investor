@@ -12,7 +12,7 @@ const NAV_ITEMS: { key: "gold" | "apartment"; label: string; icon: string }[] = 
 
 export default function BottomNav({ active, onChange }: BottomNavProps) {
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-10 bg-[#0a0a0a] border-t border-neutral-800 flex h-14">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-10 bg-[var(--sidebar-bg)] border-t border-[var(--border)] flex h-14">
       {NAV_ITEMS.map(({ key, label, icon }) => {
         const isActive = active === key;
         return (
