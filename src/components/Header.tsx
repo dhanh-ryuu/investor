@@ -11,9 +11,8 @@ function formatVND(value: number): string {
 export default function Header({ prices }: HeaderProps) {
   if (prices.length === 0) {
     return (
-      <div className="card" style={{ textAlign: "center", padding: "24px" }}>
-        <h1 style={{ fontSize: "20px", marginBottom: "8px" }}>Gold Price Tracker</h1>
-        <p style={{ color: "var(--text-muted)" }}>No price data available yet</p>
+      <div className="py-12 text-center">
+        <p className="text-[var(--text-muted)] text-sm">No price data available yet</p>
       </div>
     );
   }
@@ -21,33 +20,50 @@ export default function Header({ prices }: HeaderProps) {
   const latest = prices[prices.length - 1];
   const previous = prices.length > 1 ? prices[prices.length - 2] : null;
   const buyChange = previous ? calculateChange(previous.buy_price, latest.buy_price) : null;
+  const isUp = buyChange ? buyChange.absolute > 0 : false;
+  const isDown = buyChange ? buyChange.absolute < 0 : false;
 
   return (
-    <div className="card">
-      <h1 style={{ fontSize: "18px", color: "var(--text-muted)", marginBottom: "12px" }}>
-        Gold Price Tracker
-      </h1>
-      <div style={{ fontSize: "12px", color: "var(--text-muted)", marginBottom: "4px" }}>
-        Vàng 9999 — {latest.date}
+    <div className="pb-8 mb-6 border-b border-[var(--border)]">
+      <p className="text-xs text-[var(--text-muted)] uppercase tracking-widest mb-3">
+        Vàng 9999 · {latest.date}
+      </p>
+
+      <div className="text-4xl font-bold tabular-nums mb-2 text-[var(--text)]">
+        {formatVND(latest.sell_price)} ₫
       </div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-        <div>
-          <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>MUA</div>
-          <div style={{ fontSize: "24px", fontWeight: 700 }}>{formatVND(latest.buy_price)}</div>
-        </div>
-        <div style={{ textAlign: "right" }}>
-          <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>BÁN</div>
-          <div style={{ fontSize: "24px", fontWeight: 700 }}>{formatVND(latest.sell_price)}</div>
-        </div>
-      </div>
+
       {buyChange && (
-        <div
-          style={{ marginTop: "8px", fontSize: "14px", fontWeight: 500 }}
-          className={buyChange.absolute > 0 ? "price-up" : buyChange.absolute < 0 ? "price-down" : ""}
+        <span
+          className={[
+            "inline-block text-sm font-medium px-2.5 py-0.5 rounded mb-4",
+            isUp
+              ? "bg-green-50 text-[var(--green)]"
+              : isDown
+              ? "bg-red-50 text-[var(--red)]"
+              : "bg-[var(--bg-subtle)] text-[var(--text-muted)]",
+          ].join(" ")}
         >
-          {buyChange.absolute > 0 ? "+" : ""}{formatVND(buyChange.absolute)} ({buyChange.percentage > 0 ? "+" : ""}{buyChange.percentage.toFixed(2)}%)
-        </div>
+          {buyChange.absolute > 0 ? "+" : ""}
+          {formatVND(buyChange.absolute)} ({buyChange.percentage > 0 ? "+" : ""}
+          {buyChange.percentage.toFixed(2)}%)
+        </span>
       )}
+
+      <div className="flex gap-8 text-sm text-[var(--text-secondary)]">
+        <div>
+          <span className="text-[var(--text-muted)] text-xs uppercase tracking-wide mr-2">Mua</span>
+          <span className="font-semibold text-[var(--text)] tabular-nums">
+            {formatVND(latest.buy_price)}
+          </span>
+        </div>
+        <div>
+          <span className="text-[var(--text-muted)] text-xs uppercase tracking-wide mr-2">Bán</span>
+          <span className="font-semibold text-[var(--text)] tabular-nums">
+            {formatVND(latest.sell_price)}
+          </span>
+        </div>
+      </div>
     </div>
   );
 }
