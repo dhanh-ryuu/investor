@@ -41,15 +41,15 @@ interface ApartmentChartProps {
 }
 
 const BEDROOM_COLORS: Record<string, string> = {
-  "1pn": "#60a5fa",
-  "2pn": "#fb923c",
-  "3pn": "#4ade80",
+  "1pn": "#0a0a0a",
+  "2pn": "#525252",
+  "3pn": "#a3a3a3",
 };
 
 const AREA_COLORS: Record<string, string> = {
-  ocean_park_1: "#60a5fa",
-  ocean_park_2: "#fb923c",
-  ocean_park_3: "#4ade80",
+  ocean_park_1: "#0a0a0a",
+  ocean_park_2: "#525252",
+  ocean_park_3: "#a3a3a3",
 };
 
 const AREA_LABELS: Record<string, string> = {
@@ -115,10 +115,10 @@ export default function ApartmentChart({ prices, selectedArea, selectedBedroom }
         labels: { color: "#a3a3a3", font: { size: 11 }, boxWidth: 12, padding: 12 },
       },
       tooltip: {
-        backgroundColor: "#242424",
-        titleColor: "#e5e5e5",
-        bodyColor: "#a3a3a3",
-        borderColor: "#333",
+        backgroundColor: "#ffffff",
+        titleColor: "#0a0a0a",
+        bodyColor: "#525252",
+        borderColor: "#e5e5e5",
         borderWidth: 1,
         padding: 10,
         callbacks: {
@@ -131,16 +131,16 @@ export default function ApartmentChart({ prices, selectedArea, selectedBedroom }
     },
     scales: {
       x: {
-        ticks: { color: "#737373", font: { size: 10 }, maxRotation: 45 },
-        grid: { color: "rgba(51, 51, 51, 0.5)" },
+        ticks: { color: "#a3a3a3", font: { size: 10 }, maxRotation: 45 },
+        grid: { color: "rgba(0, 0, 0, 0.05)" },
       },
       y: {
         ticks: {
-          color: "#737373",
+          color: "#a3a3a3",
           font: { size: 10 },
           callback: (value) => formatMillions(value as number),
         },
-        grid: { color: "rgba(51, 51, 51, 0.5)" },
+        grid: { color: "rgba(0, 0, 0, 0.05)" },
       },
     },
   };
