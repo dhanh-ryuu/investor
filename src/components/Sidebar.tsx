@@ -1,3 +1,5 @@
+"use client";
+
 interface SidebarProps {
   active: "gold" | "apartment";
   onChange: (view: "gold" | "apartment") => void;
