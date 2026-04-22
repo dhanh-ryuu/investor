@@ -41,15 +41,15 @@ interface ApartmentChartProps {
 }
 
 const BEDROOM_COLORS: Record<string, string> = {
-  "1pn": "#0a0a0a",
-  "2pn": "#525252",
-  "3pn": "#a3a3a3",
+  "1pn": "#a78bfa",
+  "2pn": "#c4b5fd",
+  "3pn": "#7c3aed",
 };
 
 const AREA_COLORS: Record<string, string> = {
-  ocean_park_1: "#0a0a0a",
-  ocean_park_2: "#525252",
-  ocean_park_3: "#a3a3a3",
+  ocean_park_1: "#a78bfa",
+  ocean_park_2: "#c4b5fd",
+  ocean_park_3: "#7c3aed",
 };
 
 const AREA_LABELS: Record<string, string> = {
@@ -71,7 +71,6 @@ export default function ApartmentChart({ prices, selectedArea, selectedBedroom }
   let datasets;
 
   if (selectedArea !== "all") {
-    // Single area: show 3 bedroom type lines
     const bedroomTypes = ["1pn", "2pn", "3pn"];
     datasets = bedroomTypes.map((bt) => {
       const filtered = prices.filter((p) => p.area === selectedArea && p.bedroom_type === bt);
@@ -87,7 +86,6 @@ export default function ApartmentChart({ prices, selectedArea, selectedBedroom }
       };
     });
   } else {
-    // All areas: show 3 area lines for selected bedroom type
     const areas = ["ocean_park_1", "ocean_park_2", "ocean_park_3"];
     datasets = areas.map((area) => {
       const filtered = prices.filter((p) => p.area === area && p.bedroom_type === selectedBedroom);
@@ -112,13 +110,13 @@ export default function ApartmentChart({ prices, selectedArea, selectedBedroom }
       legend: {
         display: true,
         position: "bottom",
-        labels: { color: "#a3a3a3", font: { size: 11 }, boxWidth: 12, padding: 12 },
+        labels: { color: "#444444", font: { size: 11 }, boxWidth: 12, padding: 12 },
       },
       tooltip: {
-        backgroundColor: "#ffffff",
-        titleColor: "#0a0a0a",
-        bodyColor: "#525252",
-        borderColor: "#e5e5e5",
+        backgroundColor: "#141414",
+        titleColor: "#e5e5e5",
+        bodyColor: "#888888",
+        borderColor: "#2a2a2a",
         borderWidth: 1,
         padding: 10,
         callbacks: {
@@ -131,16 +129,16 @@ export default function ApartmentChart({ prices, selectedArea, selectedBedroom }
     },
     scales: {
       x: {
-        ticks: { color: "#a3a3a3", font: { size: 10 }, maxRotation: 45 },
-        grid: { color: "rgba(0, 0, 0, 0.05)" },
+        ticks: { color: "#444444", font: { size: 10 }, maxRotation: 45 },
+        grid: { color: "rgba(255, 255, 255, 0.04)" },
       },
       y: {
         ticks: {
-          color: "#a3a3a3",
+          color: "#444444",
           font: { size: 10 },
           callback: (value) => formatMillions(value as number),
         },
-        grid: { color: "rgba(0, 0, 0, 0.05)" },
+        grid: { color: "rgba(255, 255, 255, 0.04)" },
       },
     },
   };
