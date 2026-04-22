@@ -11,15 +11,17 @@ interface ApartmentListingsProps {
 function parseListings(raw: string | ListingSample[] | undefined): ListingSample[] {
   if (!raw) return [];
   if (typeof raw === "string") {
-    try { return JSON.parse(raw); } catch { return []; }
+    try {
+      return JSON.parse(raw);
+    } catch {
+      return [];
+    }
   }
   return raw;
 }
 
-function formatVND(value: number): string {
-  if (value >= 1_000_000_000) {
-    return (value / 1_000_000_000).toFixed(2) + " tỷ";
-  }
+function formatPrice(value: number): string {
+  if (value >= 1_000_000_000) return (value / 1_000_000_000).toFixed(2) + " tỷ";
   return (value / 1_000_000).toFixed(0) + " triệu";
 }
 
@@ -36,11 +38,11 @@ const AREA_LABELS: Record<string, string> = {
 export default function ApartmentListings({ prices, selectedArea }: ApartmentListingsProps) {
   const [expanded, setExpanded] = useState<string | null>(null);
 
-  const areas = selectedArea === "all"
-    ? ["ocean_park_1", "ocean_park_2", "ocean_park_3"]
-    : [selectedArea];
+  const areas =
+    selectedArea === "all"
+      ? ["ocean_park_1", "ocean_park_2", "ocean_park_3"]
+      : [selectedArea];
 
-  // Get latest date data
   const latestDate = prices.reduce((max, p) => (p.date > max ? p.date : max), "");
   const latestPrices = prices.filter((p) => p.date === latestDate && areas.includes(p.area));
 
@@ -48,79 +50,69 @@ export default function ApartmentListings({ prices, selectedArea }: ApartmentLis
 
   const bedroomTypes = ["1pn", "2pn", "3pn"];
 
+  const groups = areas
+    .flatMap((area) =>
+      bedroomTypes.map((bt) => {
+        const row = latestPrices.find((p) => p.area === area && p.bedroom_type === bt);
+        if (!row) return null;
+        const listings = parseListings(row.sample_listings);
+        if (listings.length === 0) return null;
+        const key = `${area}-${bt}`;
+        const label =
+          selectedArea === "all"
+            ? `${AREA_LABELS[area]} · ${bt.toUpperCase()}`
+            : bt.toUpperCase();
+        return { key, label, listings };
+      })
+    )
+    .filter(Boolean) as { key: string; label: string; listings: ListingSample[] }[];
+
+  if (groups.length === 0) return null;
+
   return (
-    <div className="card" style={{ padding: "12px" }}>
-      <h3 style={{ fontSize: "14px", color: "var(--text-muted)", marginBottom: "8px" }}>
-        Listings ({latestDate})
-      </h3>
-      {areas.map((area) =>
-        bedroomTypes.map((bt) => {
-          const row = latestPrices.find((p) => p.area === area && p.bedroom_type === bt);
-          if (!row) return null;
+    <div className="mb-6">
+      <p className="text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-widest mb-3">
+        Sample Listings · {latestDate}
+      </p>
 
-          const listings = parseListings(row.sample_listings);
-          if (listings.length === 0) return null;
-
-          const key = `${area}-${bt}`;
+      <div className="border border-[var(--border)] rounded-[var(--radius)] divide-y divide-[var(--border)]">
+        {groups.map(({ key, label, listings }) => {
           const isExpanded = expanded === key;
-          const label = selectedArea === "all" ? `${AREA_LABELS[area]} - ${bt.toUpperCase()}` : bt.toUpperCase();
-
           return (
-            <div key={key} style={{ marginBottom: "8px" }}>
+            <div key={key}>
               <button
                 onClick={() => setExpanded(isExpanded ? null : key)}
-                style={{
-                  background: "none",
-                  border: "1px solid var(--border-color, #333)",
-                  color: "var(--text-primary, #e5e5e5)",
-                  width: "100%",
-                  padding: "8px 12px",
-                  borderRadius: "6px",
-                  cursor: "pointer",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  fontSize: "13px",
-                  height: "auto",
-                }}
+                className="w-full flex items-center justify-between px-4 py-3 text-sm hover:bg-[var(--bg-subtle)] transition-colors"
               >
-                <span>{label} ({listings.length} listings)</span>
-                <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>
-                  {isExpanded ? "Thu gọn" : "Xem chi tiết"}
+                <span className="font-medium text-[var(--text)]">
+                  {label}
+                  <span className="ml-2 text-[var(--text-muted)] font-normal">
+                    {listings.length} listing{listings.length !== 1 ? "s" : ""}
+                  </span>
+                </span>
+                <span className="text-[var(--text-muted)] text-base leading-none">
+                  {isExpanded ? "−" : "+"}
                 </span>
               </button>
 
               {isExpanded && (
-                <div style={{ marginTop: "4px" }}>
+                <div className="divide-y divide-[var(--border)]">
                   {listings.map((l, i) => (
                     <a
                       key={i}
                       href={l.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      style={{
-                        display: "block",
-                        padding: "8px 12px",
-                        borderBottom: "1px solid rgba(51,51,51,0.5)",
-                        textDecoration: "none",
-                        color: "inherit",
-                        fontSize: "12px",
-                      }}
+                      className="flex flex-col gap-1 px-4 py-3 hover:bg-[var(--bg-subtle)] transition-colors no-underline"
                     >
-                      <div style={{
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        color: "#60a5fa",
-                        marginBottom: "2px",
-                      }}>
-                        {l.title || "Xem listing"}
-                      </div>
-                      <div style={{ color: "var(--text-muted)", display: "flex", gap: "12px" }}>
-                        <span>{formatVND(l.price)}</span>
-                        <span>{l.areaM2}m²</span>
+                      <span className="text-[13px] text-[#2563eb] truncate">
+                        {l.title || "View listing"}
+                      </span>
+                      <div className="flex gap-4 text-[12px] text-[var(--text-muted)] tabular-nums">
+                        <span>{formatPrice(l.price)}</span>
+                        <span>{l.areaM2} m²</span>
                         <span>{formatM(l.pricePerM2)}/m²</span>
-                        <span style={{ opacity: 0.6 }}>{l.source}</span>
+                        <span className="opacity-60">{l.source}</span>
                       </div>
                     </a>
                   ))}
@@ -128,8 +120,8 @@ export default function ApartmentListings({ prices, selectedArea }: ApartmentLis
               )}
             </div>
           );
-        })
-      )}
+        })}
+      </div>
     </div>
   );
 }
