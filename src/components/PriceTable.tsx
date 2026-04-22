@@ -21,7 +21,7 @@ export default function PriceTable({ prices }: PriceTableProps) {
             {["Date", "Buy", "Sell", "Change"].map((h) => (
               <th
                 key={h}
-                className={`pb-2.5 text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-widest border-b border-[var(--text)] ${
+                className={`pb-2.5 text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-widest border-b-2 border-[var(--text-secondary)] ${
                   h === "Date" ? "text-left" : "text-right"
                 }`}
               >
