@@ -6,6 +6,7 @@ import TimeRangeSelector from "@/components/TimeRangeSelector";
 import PriceChart from "@/components/PriceChart";
 import StatsBar from "@/components/StatsBar";
 import PriceTable from "@/components/PriceTable";
+import Skeleton from "@/components/Skeleton";
 import { PriceRow } from "@/lib/indicators";
 
 const RANGE_DAYS: Record<string, number> = {
@@ -37,27 +38,40 @@ export default function GoldView() {
   }, [range, fetchPrices]);
 
   const visibleStartIndex =
-    allPrices.length > RANGE_DAYS[range]
-      ? allPrices.length - RANGE_DAYS[range]
-      : 0;
-
+    allPrices.length > RANGE_DAYS[range] ? allPrices.length - RANGE_DAYS[range] : 0;
   const visiblePrices = allPrices.slice(visibleStartIndex);
+
+  if (loading) {
+    return (
+      <div>
+        <div className="pb-8 mb-6 border-b border-[var(--border)]">
+          <Skeleton className="h-3 w-32 mb-3" />
+          <Skeleton className="h-10 w-56 mb-2" />
+          <Skeleton className="h-5 w-32 mb-4" />
+          <div className="flex gap-8">
+            <Skeleton className="h-4 w-28" />
+            <Skeleton className="h-4 w-28" />
+          </div>
+        </div>
+        <Skeleton className="h-6 w-48 mb-4" />
+        <Skeleton className="h-[280px] w-full mb-4" />
+        <div className="grid grid-cols-2 gap-3 mb-4">
+          <Skeleton className="h-20" />
+          <Skeleton className="h-20" />
+          <Skeleton className="h-20" />
+          <Skeleton className="h-20" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
       <Header prices={visiblePrices} />
       <TimeRangeSelector selected={range} onChange={setRange} />
-      {loading ? (
-        <div className="card" style={{ textAlign: "center", padding: "40px" }}>
-          <p style={{ color: "var(--text-muted)" }}>Loading...</p>
-        </div>
-      ) : (
-        <>
-          <PriceChart prices={allPrices} visibleStartIndex={visibleStartIndex} />
-          <StatsBar prices={visiblePrices} />
-          <PriceTable prices={visiblePrices} />
-        </>
-      )}
+      <PriceChart prices={allPrices} visibleStartIndex={visibleStartIndex} />
+      <StatsBar prices={visiblePrices} />
+      <PriceTable prices={visiblePrices} />
     </>
   );
 }
