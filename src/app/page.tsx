@@ -15,7 +15,7 @@ export default function Home() {
       <Sidebar active={view} onChange={setView} />
 
       {/* Main content */}
-      <main className="flex-1 md:ml-[200px] min-h-screen">
+      <main className="flex-1 min-h-screen">
         <div className="max-w-3xl mx-auto px-4 py-8 pb-20 md:pb-8">
           {view === "gold" && <GoldView />}
           {view === "apartment" && <ApartmentView />}

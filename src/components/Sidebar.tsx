@@ -12,7 +12,7 @@ const NAV_ITEMS: { key: "gold" | "apartment"; label: string; icon: string }[] = 
 
 export default function Sidebar({ active, onChange }: SidebarProps) {
   return (
-    <aside className="hidden md:flex flex-col w-[200px] min-h-screen bg-[#0a0a0a] fixed left-0 top-0 z-10">
+    <aside className="hidden md:flex flex-col w-[200px] h-screen bg-[#0a0a0a] sticky top-0 overflow-y-auto shrink-0">
       {/* Logo */}
       <div className="px-6 py-8">
         <span className="text-white text-xs font-semibold tracking-[0.2em] uppercase">
