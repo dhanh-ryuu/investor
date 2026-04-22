@@ -12,7 +12,7 @@ const NAV_ITEMS: { key: "gold" | "apartment"; label: string; icon: string }[] = 
 
 export default function Sidebar({ active, onChange }: SidebarProps) {
   return (
-    <aside className="hidden md:flex flex-col w-[200px] h-screen bg-[#0a0a0a] sticky top-0 overflow-y-auto shrink-0">
+    <aside className="hidden md:flex flex-col w-[200px] h-screen bg-[var(--sidebar-bg)] border-r border-[var(--border)] sticky top-0 overflow-y-auto shrink-0">
       {/* Logo */}
       <div className="px-6 py-8">
         <span className="text-white text-xs font-semibold tracking-[0.2em] uppercase">
@@ -29,14 +29,17 @@ export default function Sidebar({ active, onChange }: SidebarProps) {
               key={key}
               onClick={() => onChange(key)}
               className={[
-                "flex items-center gap-3 px-3 py-2.5 rounded text-sm font-medium transition-colors text-left",
+                "flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius)] text-sm font-medium transition-colors text-left",
                 isActive
-                  ? "text-white bg-white/10 border-l-2 border-white"
-                  : "text-neutral-400 hover:text-neutral-100 hover:bg-white/5 border-l-2 border-transparent",
+                  ? "bg-white/5 text-white"
+                  : "text-neutral-500 hover:text-neutral-300 hover:bg-white/5",
               ].join(" ")}
             >
               <span className="text-base">{icon}</span>
               {label}
+              {isActive && (
+                <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
+              )}
             </button>
           );
         })}
@@ -44,7 +47,7 @@ export default function Sidebar({ active, onChange }: SidebarProps) {
 
       {/* Footer */}
       <div className="px-6 py-6">
-        <p className="text-[11px] text-neutral-600 uppercase tracking-widest">
+        <p className="text-[11px] text-[var(--text-muted)] uppercase tracking-widest">
           Updated daily
         </p>
       </div>
