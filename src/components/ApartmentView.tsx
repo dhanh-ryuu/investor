@@ -7,6 +7,7 @@ import ApartmentChart, { type ApartmentPriceRow } from "@/components/ApartmentCh
 import ApartmentStatsBar from "@/components/ApartmentStatsBar";
 import ApartmentPriceTable from "@/components/ApartmentPriceTable";
 import ApartmentListings from "@/components/ApartmentListings";
+import Skeleton from "@/components/Skeleton";
 
 const BEDROOM_TYPES = ["1pn", "2pn", "3pn"];
 
@@ -38,40 +39,53 @@ export default function ApartmentView() {
 
   return (
     <>
-      <div className="card">
-        <h1 style={{ fontSize: "18px", color: "var(--text-muted)", marginBottom: "4px" }}>
-          Apartment Price Tracker
-        </h1>
-        <p style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-          Vinhomes Ocean Park — Avg price per m²
+      {/* Section header */}
+      <div className="pb-6 mb-6 border-b border-[var(--border)]">
+        <p className="text-xs text-[var(--text-muted)] uppercase tracking-widest mb-2">
+          Vinhomes Ocean Park
         </p>
+        <h1 className="text-2xl font-semibold text-[var(--text)]">Apartment Prices</h1>
+        <p className="text-sm text-[var(--text-secondary)] mt-1">Average price per m²</p>
       </div>
 
       <AreaSelector selected={area} onChange={setArea} />
       <TimeRangeSelector selected={range} onChange={setRange} />
 
+      {/* Bedroom filter — only shown in "all" mode */}
       {area === "all" && (
-        <div className="pill-group" style={{ marginTop: "-8px" }}>
-          {BEDROOM_TYPES.map((bt) => (
-            <button
-              key={bt}
-              className={`pill ${bedroomFilter === bt ? "active" : ""}`}
-              onClick={() => setBedroomFilter(bt)}
-              style={{ fontSize: "12px", padding: "4px 14px" }}
-            >
-              {bt.toUpperCase()}
-            </button>
-          ))}
+        <div className="flex gap-6 border-b border-[var(--border)] mb-4">
+          {BEDROOM_TYPES.map((bt) => {
+            const isActive = bedroomFilter === bt;
+            return (
+              <button
+                key={bt}
+                onClick={() => setBedroomFilter(bt)}
+                className={[
+                  "pb-2 text-sm font-medium transition-colors",
+                  isActive
+                    ? "border-b-2 border-[var(--text)] text-[var(--text)] -mb-px"
+                    : "text-[var(--text-muted)] hover:text-[var(--text-secondary)]",
+                ].join(" ")}
+              >
+                {bt.toUpperCase()}
+              </button>
+            );
+          })}
         </div>
       )}
 
       {loading ? (
-        <div className="card" style={{ textAlign: "center", padding: "40px" }}>
-          <p style={{ color: "var(--text-muted)" }}>Loading...</p>
+        <div>
+          <Skeleton className="h-[280px] w-full mb-4" />
+          <div className="grid grid-cols-2 gap-3 mb-4">
+            <Skeleton className="h-20" />
+            <Skeleton className="h-20" />
+            <Skeleton className="h-20" />
+          </div>
         </div>
       ) : prices.length === 0 ? (
-        <div className="card" style={{ textAlign: "center", padding: "40px" }}>
-          <p style={{ color: "var(--text-muted)" }}>
+        <div className="py-16 text-center">
+          <p className="text-[var(--text-muted)] text-sm">
             No apartment data yet. Data will appear after the first daily crawl.
           </p>
         </div>

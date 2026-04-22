@@ -1,29 +1,31 @@
 import type { Metadata, Viewport } from "next";
+import { Geist } from "next/font/google";
 import "./globals.css";
 
+const geist = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist",
+});
+
 export const metadata: Metadata = {
-  title: "Gold Price Tracker",
-  description: "Track daily 9999 gold prices from Vàng Quý Tùng",
+  title: "Investor",
+  description: "Track gold and apartment prices",
   manifest: "/manifest.json",
-  icons: {
-    icon: "/favicon.svg",
-  },
+  icons: { icon: "/favicon.svg" },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0f0f0f",
+  themeColor: "#ffffff",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="vi">
-      <body>{children}</body>
+    <html lang="vi" className={geist.variable}>
+      <body style={{ fontFamily: "var(--font-geist), -apple-system, sans-serif" }}>
+        {children}
+      </body>
     </html>
   );
 }

@@ -13,9 +13,9 @@ vi.mock("@/lib/db", () => ({
 
 import { fetchGoldPrice } from "@/lib/scraper";
 import { db, initDb } from "@/lib/db";
-import { POST } from "@/app/api/cron/scrape/route";
+import { GET } from "@/app/api/cron/scrape/route";
 
-describe("POST /api/cron/scrape", () => {
+describe("GET /api/cron/scrape", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     process.env.CRON_SECRET = "test-secret";
@@ -23,10 +23,10 @@ describe("POST /api/cron/scrape", () => {
 
   it("rejects requests without valid authorization", async () => {
     const req = new Request("http://localhost/api/cron/scrape", {
-      method: "POST",
+      method: "GET",
       headers: { Authorization: "wrong-secret" },
     });
-    const res = await POST(req);
+    const res = await GET(req);
     expect(res.status).toBe(401);
   });
 
@@ -39,10 +39,10 @@ describe("POST /api/cron/scrape", () => {
     vi.mocked(initDb).mockResolvedValue(undefined);
 
     const req = new Request("http://localhost/api/cron/scrape", {
-      method: "POST",
+      method: "GET",
       headers: { Authorization: "Bearer test-secret" },
     });
-    const res = await POST(req);
+    const res = await GET(req);
     const body = await res.json();
     expect(res.status).toBe(200);
     expect(body.success).toBe(true);
@@ -55,10 +55,10 @@ describe("POST /api/cron/scrape", () => {
     vi.mocked(initDb).mockResolvedValue(undefined);
 
     const req = new Request("http://localhost/api/cron/scrape", {
-      method: "POST",
+      method: "GET",
       headers: { Authorization: "Bearer test-secret" },
     });
-    const res = await POST(req);
+    const res = await GET(req);
     const body = await res.json();
     expect(res.status).toBe(200);
     expect(body.success).toBe(false);
