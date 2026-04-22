@@ -55,7 +55,7 @@ describe("ApartmentChart", () => {
       <ApartmentChart prices={prices} selectedArea="ocean_park_1" selectedBedroom="1pn" />
     );
     const [props] = vi.mocked(Line).mock.calls[0];
-    const onePnDataset = props.data.datasets.find((d: { label: string }) => d.label === "1PN");
+    const onePnDataset = props.data.datasets.find((d: { label?: string }) => d.label === "1PN");
     expect(onePnDataset?.borderColor).toBe("#a78bfa");
   });
 
