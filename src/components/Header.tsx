@@ -38,9 +38,9 @@ export default function Header({ prices }: HeaderProps) {
           className={[
             "inline-block text-sm font-medium px-2.5 py-0.5 rounded mb-4",
             isUp
-              ? "bg-green-50 text-[var(--green)]"
+              ? "bg-[rgba(248,113,113,0.1)] text-[var(--red)]"
               : isDown
-              ? "bg-red-50 text-[var(--red)]"
+              ? "bg-[rgba(74,222,128,0.1)] text-[var(--green)]"
               : "bg-[var(--bg-subtle)] text-[var(--text-muted)]",
           ].join(" ")}
         >
