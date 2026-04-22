@@ -74,7 +74,7 @@ export default function PriceChart({ prices, visibleStartIndex }: PriceChartProp
         borderWidth: 1,
         pointRadius: 0,
         tension: 0.3,
-        borderDash: [],
+        borderDash: [4, 4],
         fill: false,
       },
       {
