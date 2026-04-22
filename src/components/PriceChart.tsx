@@ -48,19 +48,19 @@ export default function PriceChart({ prices, visibleStartIndex }: PriceChartProp
       {
         label: "Mua (Buy)",
         data: visiblePrices.map((p) => p.buy_price),
-        borderColor: "#0a0a0a",
-        backgroundColor: "rgba(10, 10, 10, 0.05)",
+        borderColor: "#a78bfa",
+        backgroundColor: "rgba(167, 139, 250, 0.08)",
         borderWidth: 2,
         pointRadius: buyPointRadius,
         pointBackgroundColor: buyPointBgColor,
         pointBorderColor: buyPointBgColor,
         tension: 0.3,
-        fill: false,
+        fill: true,
       },
       {
         label: "Bán (Sell)",
         data: visiblePrices.map((p) => p.sell_price),
-        borderColor: "#737373",
+        borderColor: "#3f3f46",
         backgroundColor: "transparent",
         borderWidth: 2,
         pointRadius: 0,
@@ -70,7 +70,7 @@ export default function PriceChart({ prices, visibleStartIndex }: PriceChartProp
       {
         label: "MA7",
         data: visibleMA7,
-        borderColor: "rgba(10, 10, 10, 0.25)",
+        borderColor: "rgba(167, 139, 250, 0.3)",
         borderWidth: 1,
         pointRadius: 0,
         tension: 0.3,
@@ -80,7 +80,7 @@ export default function PriceChart({ prices, visibleStartIndex }: PriceChartProp
       {
         label: "MA30",
         data: visibleMA30,
-        borderColor: "rgba(10, 10, 10, 0.12)",
+        borderColor: "rgba(167, 139, 250, 0.15)",
         borderWidth: 1,
         pointRadius: 0,
         tension: 0.3,
@@ -98,13 +98,13 @@ export default function PriceChart({ prices, visibleStartIndex }: PriceChartProp
       legend: {
         display: true,
         position: "bottom",
-        labels: { color: "#a3a3a3", font: { size: 11 }, boxWidth: 12, padding: 12 },
+        labels: { color: "#444444", font: { size: 11 }, boxWidth: 12, padding: 12 },
       },
       tooltip: {
-        backgroundColor: "#ffffff",
-        titleColor: "#0a0a0a",
-        bodyColor: "#525252",
-        borderColor: "#e5e5e5",
+        backgroundColor: "#141414",
+        titleColor: "#e5e5e5",
+        bodyColor: "#888888",
+        borderColor: "#2a2a2a",
         borderWidth: 1,
         padding: 10,
         callbacks: {
@@ -118,16 +118,16 @@ export default function PriceChart({ prices, visibleStartIndex }: PriceChartProp
     },
     scales: {
       x: {
-        ticks: { color: "#a3a3a3", font: { size: 10 }, maxRotation: 45 },
-        grid: { color: "rgba(0, 0, 0, 0.05)" },
+        ticks: { color: "#444444", font: { size: 10 }, maxRotation: 45 },
+        grid: { color: "rgba(255, 255, 255, 0.04)" },
       },
       y: {
         ticks: {
-          color: "#a3a3a3",
+          color: "#444444",
           font: { size: 10 },
           callback: (value) => formatMillions(value as number),
         },
-        grid: { color: "rgba(0, 0, 0, 0.05)" },
+        grid: { color: "rgba(255, 255, 255, 0.04)" },
       },
     },
   };
