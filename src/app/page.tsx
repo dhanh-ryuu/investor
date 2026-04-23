@@ -16,7 +16,7 @@ export default function Home() {
 
       {/* Main content */}
       <main className="flex-1 min-h-screen">
-        <div className="max-w-3xl mx-auto px-4 py-8 pb-20 md:pb-8">
+        <div className="max-w-3xl mx-auto px-6 md:px-10 py-10 pb-24 md:pb-12">
           {view === "gold" && <GoldView />}
           {view === "apartment" && <ApartmentView />}
         </div>

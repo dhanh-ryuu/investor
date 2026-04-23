@@ -14,14 +14,14 @@ export default function PriceTable({ prices }: PriceTableProps) {
   const reversed = [...prices].reverse();
 
   return (
-    <div className="mb-6">
+    <div className="mb-8">
       <table className="w-full text-[13px]">
         <thead>
           <tr>
             {["Date", "Buy", "Sell", "Change"].map((h) => (
               <th
                 key={h}
-                className={`pb-2.5 text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-widest border-b-2 border-[var(--text-secondary)] ${
+                className={`pb-3 text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-widest border-b-2 border-[var(--text-secondary)] ${
                   h === "Date" ? "text-left" : "text-right"
                 }`}
               >
@@ -46,14 +46,14 @@ export default function PriceTable({ prices }: PriceTableProps) {
                 key={row.date}
                 className="border-b border-[var(--border)] hover:bg-[var(--bg-subtle)] transition-colors"
               >
-                <td className="py-3 text-[var(--text-secondary)]">{row.date.slice(5)}</td>
-                <td className="py-3 text-right tabular-nums font-medium text-[var(--text)]">
+                <td className="py-4 text-[var(--text-secondary)]">{row.date.slice(5)}</td>
+                <td className="py-4 text-right tabular-nums font-medium text-[var(--text)]">
                   {formatVND(row.buy_price)}
                 </td>
-                <td className="py-3 text-right tabular-nums text-[var(--text-secondary)]">
+                <td className="py-4 text-right tabular-nums text-[var(--text-secondary)]">
                   {formatVND(row.sell_price)}
                 </td>
-                <td className={`py-3 text-right tabular-nums font-medium ${changeClass}`}>
+                <td className={`py-4 text-right tabular-nums font-medium ${changeClass}`}>
                   {change !== 0 ? `${change > 0 ? "+" : ""}${formatVND(change)}` : "—"}
                 </td>
               </tr>

@@ -50,17 +50,17 @@ export default function StatsBar({ prices }: StatsBarProps) {
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-3 mb-6">
+    <div className="grid grid-cols-2 gap-4 mb-8">
       {stats.map(({ label, value, sub, valueClass }) => (
         <div
           key={label}
-          className="bg-[var(--bg-subtle)] border border-[var(--border)] rounded-[var(--radius)] p-4"
+          className="bg-[var(--bg-subtle)] border border-[var(--border)] rounded-[var(--radius)] p-5"
         >
-          <p className="text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wide mb-1">
+          <p className="text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wide mb-2">
             {label}
           </p>
           <p className={`text-xl font-semibold tabular-nums ${valueClass}`}>{value}</p>
-          {sub && <p className="text-[11px] text-[var(--text-muted)] mt-0.5">{sub}</p>}
+          {sub && <p className="text-[11px] text-[var(--text-muted)] mt-1">{sub}</p>}
         </div>
       ))}
     </div>
