@@ -15,10 +15,12 @@ export default function Home() {
       <Sidebar active={view} onChange={setView} />
 
       {/* Main content */}
-      <main className="flex-1 min-h-screen">
-        <div className="max-w-3xl mx-auto px-6 md:px-10 py-10 pb-24 md:pb-12">
+      <main className="flex-1">
+        <div className="max-w-3xl mx-auto px-6 md:px-10 py-10">
           {view === "gold" && <GoldView />}
           {view === "apartment" && <ApartmentView />}
+          {/* Clearance for mobile bottom nav */}
+          <div className="h-16 md:hidden" />
         </div>
       </main>
 
