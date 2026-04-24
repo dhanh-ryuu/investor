@@ -29,6 +29,8 @@ export default function GoldComparisonChart({
   sjcPrices,
   worldGold,
 }: GoldComparisonChartProps) {
+  // If worldGold is empty, nothing to render. Empty sjcPrices is handled by the
+  // inner-join producing an empty dates array, which triggers the second null guard below.
   if (worldGold.length === 0) return null;
 
   // Inner join by date
@@ -43,6 +45,7 @@ export default function GoldComparisonChart({
 
   const labels = dates.map((d) => d.slice(5));
   const sjcData = dates.map((d) => sjcByDate.get(d)!.buy_price);
+  // dates is derived from worldGold keys, so worldByDate.get(d) is always defined
   const asiaData = dates.map((d) => worldByDate.get(d)!.asia_vnd);
   const worldData = dates.map((d) => worldByDate.get(d)!.world_vnd);
 
