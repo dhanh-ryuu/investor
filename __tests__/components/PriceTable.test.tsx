@@ -31,7 +31,7 @@ describe("PriceTable", () => {
 
   it("shows rows in reverse chronological order", () => {
     render(<PriceTable prices={prices} />);
-    const cells = screen.getAllByText(/\/04/);
-    expect(cells[0].textContent).toBe("22/04");
+    const cells = screen.getAllByText(/04-\d{2}/);
+    expect(cells[0].textContent).toBe("04-22");
   });
 });
