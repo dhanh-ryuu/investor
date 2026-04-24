@@ -43,9 +43,15 @@ export default function GoldView() {
   // World gold fetched once on mount — not tied to range selector
   useEffect(() => {
     fetch("/api/world-gold")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`world-gold fetch failed: ${res.status}`);
+        return res.json();
+      })
       .then((data: WorldGoldRow[]) => setWorldGold(data))
-      .catch(() => setWorldGold([]));
+      .catch((err) => {
+        console.error("Failed to fetch world gold:", err);
+        setWorldGold([]);
+      });
   }, []);
 
   const visibleStartIndex =
@@ -72,6 +78,7 @@ export default function GoldView() {
           <Skeleton className="h-20" />
           <Skeleton className="h-20" />
         </div>
+        <Skeleton className="h-3 w-56 mb-4" />
         <Skeleton className="h-[300px] w-full mb-4" />
       </div>
     );
