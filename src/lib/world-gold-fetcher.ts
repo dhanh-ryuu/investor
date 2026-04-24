@@ -19,7 +19,7 @@ export function parseStooqCsv(csv: string): Map<string, { open: number; close: n
     const date = parts[0].trim();
     const open = parseFloat(parts[1]);
     const close = parseFloat(parts[4]);
-    if (isNaN(open) || isNaN(close)) continue;
+    if (!isFinite(open) || !isFinite(close)) continue;
     result.set(date, { open, close });
   }
   return result;
@@ -62,6 +62,7 @@ export async function fetchWorldGold(days: number): Promise<WorldGoldRow[]> {
 
     // stooq returns newest-first; sort ascending then take last `days`
     rows.sort((a, b) => a.date.localeCompare(b.date));
+    if (days <= 0) return [];
     return rows.slice(-days);
   } catch {
     return [];

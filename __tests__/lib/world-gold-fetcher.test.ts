@@ -1,8 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { parseStooqCsv, convertToVnd } from "@/lib/world-gold-fetcher";
 
-const OZ_PER_LUONG = 37.5 / 31.1035;
-
 describe("parseStooqCsv", () => {
   it("parses header + 2 data rows correctly", () => {
     const csv = `Date,Open,High,Low,Close,Volume
@@ -35,8 +33,8 @@ describe("parseStooqCsv", () => {
 describe("convertToVnd", () => {
   it("converts open and close USD/oz to VND/lượng", () => {
     const result = convertToVnd(3000, 3100, 25000);
-    expect(result.asia_vnd).toBe(Math.round(3000 * OZ_PER_LUONG * 25000));
-    expect(result.world_vnd).toBe(Math.round(3100 * OZ_PER_LUONG * 25000));
+    expect(result.asia_vnd).toBe(90423907);
+    expect(result.world_vnd).toBe(93438038);
   });
 
   it("returns integer values (Math.round)", () => {
