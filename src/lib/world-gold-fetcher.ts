@@ -39,8 +39,8 @@ export function convertToVnd(
 export async function fetchWorldGold(days: number): Promise<WorldGoldRow[]> {
   try {
     const [xauRes, vndRes] = await Promise.all([
-      fetch(XAU_URL),
-      fetch(VND_URL),
+      fetch(XAU_URL, { signal: AbortSignal.timeout(5000) }),
+      fetch(VND_URL, { signal: AbortSignal.timeout(5000) }),
     ]);
     if (!xauRes.ok || !vndRes.ok) return [];
 
